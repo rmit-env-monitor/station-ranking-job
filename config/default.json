@@ -1,0 +1,9 @@
+{
+    "mongodb": {
+        "url": "mongodb://localhost:27017/env-monitor"
+    },
+    "redis": {
+        "port": 6379,
+        "ip": "localhost"
+    }
+}

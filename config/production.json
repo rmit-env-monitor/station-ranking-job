@@ -1,0 +1,9 @@
+{
+    "mongodb": {
+        "url": "mongodb://env-monitor:AssassinJoe94@cluster0-shard-00-00-ocpur.mongodb.net,cluster0-shard-00-01-ocpur.mongodb.net,cluster0-shard-00-02-ocpur.mongodb.net/env-monitor?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"
+    },
+    "redis": {
+        "port": 6379,
+        "ip": "ec2-54-169-8-171.ap-southeast-1.compute.amazonaws.com"
+    }
+}

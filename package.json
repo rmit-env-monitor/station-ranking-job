@@ -1,0 +1,15 @@
+{
+  "name": "station-ranking-job",
+  "version": "1.0.0",
+  "description": "Station ranking background job",
+  "main": "index.js",
+  "repository": "https://github.com/rmit-env-monitor/station-ranking-job.git",
+  "author": "joebui <dienbuijoe@outlook.com>",
+  "license": "MIT",
+  "dependencies": {
+    "config": "^1.26.1",
+    "mongoose": "^4.11.5",
+    "node-cron": "^1.2.0",
+    "redis": "^2.7.1"
+  }
+}
