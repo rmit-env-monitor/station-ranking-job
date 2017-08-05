@@ -5,6 +5,10 @@ const recordRepo = require('../DAL/repositories/record-repository')
 const Promise = global.Promise
 
 class StationRanking {
+    constructor() {
+        this.stationReport = []
+    }
+
     getCities() {
         return new Promise((resolve, reject) => {
             deviceRepo.getAvailableCities()
@@ -69,9 +73,22 @@ class StationRanking {
         })
     }
 
-    sortList() {
+    sortStations() {
+        let newStationsCities = []
 
+        return new Promise((resolve, reject) => {
+            this.getStationLatestAqi().then(stationsCities => {
+                newStationsCities = stationsCities
+                for (let i = 0; i < newStationsCities.length; i++) {
+                    newStationsCities[i].stations.sort((a, b) => {
+                        return b.aqi - a.aqi
+                    })
+                }
+
+                resolve(newStationsCities)
+            })
+        })
     }
 }
 
-module.exports = StationRanking
+module.exports = new StationRanking()
