@@ -1,14 +1,11 @@
 const q = require('q')
+const Promise = global.Promise
 
 const deviceRepo = require('../DAL/repositories/device-repository')
 const recordRepo = require('../DAL/repositories/record-repository')
-const Promise = global.Promise
+const constants = require('../utilities/constants')
 
 class StationRanking {
-    constructor() {
-        this.stationReport = []
-    }
-
     getCities() {
         return new Promise((resolve, reject) => {
             deviceRepo.getAvailableCities()
@@ -28,10 +25,10 @@ class StationRanking {
                 const devicePromises = []
                 for (let city of cities) {
                     stationsCities.push({ city: city, stations: [] })
-                    let devicePromise = deviceRepo.getDevicesByCity({ city: city }, '_id district')
+                    let devicePromise = deviceRepo.getDevicesByCity({ city: city }, '_id name district')
                         .then(devices => {
                             for (let device of devices) {
-                                stationsCities[stationsCities.length - 1].stations.push({ id: device._id, district: device.district, aqi: 0 })
+                                stationsCities[stationsCities.length - 1].stations.push({ id: device._id, name: device.name, district: device.district, aqi: 0 })
                             }
                         })
                     devicePromises.push(devicePromise)
@@ -55,7 +52,7 @@ class StationRanking {
                 for (let i = 0; i < newStationsCities.length; i++) {
                     for (let j = 0; j < newStationsCities[i].stations.length; j++) {
                         let recordPromise = recordRepo.getLatestDeviceRecord(
-                            { deviceID: newStationsCities[i].stations[j].id }, '-_id', 1, '-_id -deviceID -no2 -so2 -pm25 -pm10 -o3 -co'
+                            { deviceID: newStationsCities[i].stations[j].id }, '-_id', 1, constants.AQI_ONLY
                         ).then(records => {
                             records.length > 0 ?
                                 newStationsCities[i].stations[j].aqi = records[0]._doc.aqiValues.aqi
