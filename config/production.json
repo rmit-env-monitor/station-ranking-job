@@ -4,6 +4,6 @@
     },
     "redis": {
         "port": 6379,
-        "ip": "ec2-54-169-8-171.ap-southeast-1.compute.amazonaws.com"
+        "ip": "env-monitor.0a537l.ng.0001.apse1.cache.amazonaws.com"
     }
 }
