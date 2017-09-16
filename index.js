@@ -9,7 +9,8 @@ const stationJob = require('./jobs/station-ranking')
 const constants = require('./utilities/constants')
 const router = express.Router()
 
-const stationRankingJob = new Queue('station_ranking',
+const stationRankingJob = new Queue(
+    constants.STATION_RANKING_JOB,
     {
         redis: {
             port: config.get('redis.port'),
@@ -19,23 +20,21 @@ const stationRankingJob = new Queue('station_ranking',
 )
 
 // Setup Arena for webview.
-const arena = Arena(
-    {
-        "queues": [{
-            "name": "station_ranking",
-            "port": config.get('redis.port'),
-            "host": config.get('redis.ip'),
-            "hostId": "jobs"
-        }]
-    }
-)
+const arena = Arena({
+    'queues': [{
+        'name': constants.STATION_RANKING_JOB,
+        'port': config.get('redis.port'),
+        'host': config.get('redis.ip'),
+        'hostId': 'jobs'
+    }]
+})
 router.use('/', arena)
 
 stationRankingJob.process((job, done) => {
     runStationRanking(job, done)
 })
 
-stationRankingJob.add(null, { repeat: { cron: '1 * * * *' } })
+stationRankingJob.add(null, { repeat: { cron: '0 * * * *' } })
 
 function runStationRanking(job, done) {
     stationJob.sortStations().then(value => {

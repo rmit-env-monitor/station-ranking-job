@@ -80,6 +80,10 @@ class StationRanking {
                     newStationsCities[i].stations.sort((a, b) => {
                         return b.aqi - a.aqi
                     })
+
+                    for (let j = 1; j <= newStationsCities[i].stations.length; j++) {
+                        newStationsCities[i].stations[j - 1].idx = j
+                    }
                 }
 
                 resolve(newStationsCities)
