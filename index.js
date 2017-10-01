@@ -4,9 +4,10 @@ const express = require('express')
 const Arena = require('bull-arena')
 
 require('./DAL/mongodb-connection')
-const redis = require('./DAL/redis-connection')
 const stationJob = require('./jobs/station-ranking')
 const constants = require('./utilities/constants')
+const rankingRepo = require('./DAL/repositories/ranking-repository')
+const rankingModel = require('./DAL/models/ranking-model')
 const router = express.Router()
 
 const stationRankingJob = new Queue(
@@ -38,9 +39,8 @@ stationRankingJob.add(null, { repeat: { cron: '0 * * * *' } })
 
 function runStationRanking(job, done) {
     stationJob.sortStations().then(value => {
-        const data = JSON.stringify(value)
-        redis.set(constants.STATION_RANKING, data)
-        console.log(data)
+        rankingRepo.saveRecord(new rankingModel({ result: value }))
+        console.log(JSON.stringify(value))
         done()
     })
 }
