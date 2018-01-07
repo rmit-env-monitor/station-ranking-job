@@ -38,7 +38,7 @@ class StationRanking {
 
     for (let i = 0; i < newStationsCities.length; i++) {
       for (let j = 0; j < newStationsCities[i].stations.length; j++) {
-        const records = recordRepo.getLatestDeviceRecord(
+        const records = await recordRepo.getLatestDeviceRecord(
           { deviceID: newStationsCities[i].stations[j].id },
           "-_id",
           1,
